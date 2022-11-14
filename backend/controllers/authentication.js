@@ -1,5 +1,12 @@
 //Importing the required packages
-const User = require('../models/User')
+const express = require("express");
+const router = express();
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const bcrypt = require('bcrypt')
+router.use(cookieParser());
+require("dotenv").config();
 
 /*This function is intended to handle errors caused by uncompatible data provided by user,
   it will show the precise reason behined the caused problem
@@ -8,27 +15,29 @@ const User = require('../models/User')
         @Return:
             -This function returns an obj. that contains the defects in each
              field.
-*/ 
-function handleError(err){
-    console.log(err.message, err.code)
-    let errors = {email:'', phone:'', password:''}
+*/
+function handleError(err) {
+  console.log(err.message, err.code);
+  let errors = { email: "", phone: "", password: "" };
 
-    if(err.message.includes('user validation failed')){
-        Object.values(err.errors).forEach((error)=>{
-            errors[error.properties.path] = error.properties.message
-        })
-    }
+  if (err.message.includes("user validation failed")) {
+    Object.values(err.errors).forEach((error) => {
+      errors[error.properties.path] = error.properties.message;
+    });
+  }
 
-    //Duplicate field error `err.code`
-    if(err.code === 11000 && err.keyPattern.email === 1){
-        errors.email = 'This email is already used'
-    }
-    else if(err.code === 11000 && err.keyPattern.phone === 1){
-        errors.phone = 'This phone number is already used'
-    }
-    
-    return errors
+  //Duplicate field error `err.code`
+  if (err.code === 11000 && err.keyPattern.email === 1) {
+    errors.email = "This email is already used";
+  } else if (err.code === 11000 && err.keyPattern.phone === 1) {
+    errors.phone = "This phone number is already used";
+  }
+
+  return errors;
 }
+
+//This var. define the time of each session
+const maxAge = 60 * 60 * 7
 
 /*This function is an API that responds to the signup post request provided by the user,
   it adds the users info into the DB and return an error if the provided data are not
@@ -38,22 +47,85 @@ function handleError(err){
         -res: to respond to the users req
     @return:
         -This is a void function that designed to respond to the signing up req's.
-*/ 
-async function createUser(req, res){
-    const {first_name, last_name, region, email, phone, password} = req.body    
-    try{
-        const user = await User.create({first_name, last_name, region, email, phone, password})
-        res.status(201).json(user)
-    }
-    catch(err){
-        console.log(handleError(err))
-        res.status(400).send(handleError(err))
-    }
-
+*/
+async function createUser(req, res) {
+  //Grapping the data given by the user.
+  const { first_name, last_name, region, email, phone, password } = req.body;
+  try {
+    //adding the user account into the DB
+    const user = await User.create({
+      first_name,
+      last_name,
+      region,
+      email,
+      phone,
+      password,
+    });
+    //Creating the jwt.
+    jwt.sign(
+      {id:user._id},
+      process.env.secret,
+      { expiresIn: maxAge},
+      (err, token) => {
+          if(err) throw err;
+          res.json({token}).status(201);
+      }) 
+  } 
+  catch (err) {
+    console.log(handleError(err));
+    res.status(400).send(handleError(err));
+  }
 }
 
+/*This function is an API that responds to the signin post request provided by the user,
+  it will login the users into the app and return an error if the provided data are not
+  match the defined requirements.
+    @Parameters: 
+        -req: to get the data provided by the user
+        -res: to respond to the users req
+    @return:
+        -This is a void function that designed to respond to the signing in req's.
+*/
+const signIn = async (req, res) =>{
+  //Grapping the data given by the user.
+  let {email, password} = req.body;
+  console.log(req.body);
+  try{
+    //Looking into the DB to figure out if the provided email registered in the DB or not.
+    let user = await User.findOne({email}); // email: email
+    console.log(user);
+
+    if(!user){
+      return res.json({message: "User not found"}).status(400);
+    }
+
+      // Password Comparison
+      console.log(password); // Plaintext password
+      console.log(user.password); // Encrypted password
+      const isMatch = await bcrypt.compareSync(password, user.password);
+
+      if(!isMatch) {
+          return res.json({message: "Password not matched"}).status(401);
+      }
+      //Creating the jwt.
+      jwt.sign(
+        {id:user._id},
+        process.env.secret,
+        { expiresIn: maxAge},
+        (err, token) => {
+            if(err) throw err;
+            res.json({token}).status(200);
+        }
+    )
+  } 
+  catch (error) {
+    console.log(error)
+    res.json({message: "You are not loggedin!. Try again later."}).status(400);
+  }
+}
 
 //Exporting the functions to used in the routers.
 module.exports = {
-    createUser
-}
+  createUser,
+  signIn,
+};

@@ -1,0 +1,25 @@
+.audience {
+    display: inline;
+    /* margin: 0 0 0 100%; */
+}
+
+.navbar{
+    /* display: flex; */
+    margin: 5%;
+    background-color: rgb(139, 199, 162);
+}
+
+.title{
+    position: fixed;
+    left: 0px; top: 0px;
+    padding: 1% 0 0% 3%;
+    font-size: 3vw;
+}
+
+.audience{
+    position: fixed;
+    right: 0px; top: 0px;
+    margin: auto;
+    padding: 1% 3% 0 0;
+    font-size: 2vw;
+}

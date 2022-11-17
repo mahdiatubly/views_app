@@ -34,11 +34,12 @@ export default function Profile() {
             <div className='comment_sec'>
                 <h1>Your comments</h1>
             </div>
-
-            <label>
-                <span>Switch with default style</span>
-                <Switch onChange={handleChange} checked={state.checked} />
-            </label>
+            <div className='status_sec'>
+                <label>
+                    <h1 className='label' >Private Account</h1>
+                    <Switch onChange={handleChange} checked={state.checked} />
+                </label>
+            </div>
         </div>
     </div>
   )

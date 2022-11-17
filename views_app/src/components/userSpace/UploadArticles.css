@@ -1,0 +1,10 @@
+#article_space{
+    width: 90%;
+    height: 15vw;
+    margin: 5%;
+}
+
+.article_container{
+    padding: 0;
+    width: 97%;
+}

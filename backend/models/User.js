@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please enter a password.'],
         minlength: [8, 'The password should be at least 8 digits.']
     },
+    bio: {
+        type: String,
+    },
     content: [{
         type: schema.Types.ObjectId,
         ref: 'Content'
@@ -44,7 +47,11 @@ const userSchema = new mongoose.Schema({
     comments: [{
         type: schema.Types.ObjectId,
         ref: 'Comment'
-    }]
+    }],
+    public: {
+        type: Boolean,
+        default: true,
+    },
 
 
 })

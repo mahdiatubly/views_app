@@ -1,9 +1,23 @@
 import './App.css';
 import SignIn from './components/user/SignIn';
 import SignUp from './components/user/SignUp';
-import Home from './components/content/Home';
-import Science from './components/content/Science';
-import Nature from './components/content/Nature'
+import Home from './components/publicContent/Home';
+import PrivateHome from './components/privateContent/Home';
+import Science from './components/publicContent/Science';
+import Culture from './components/publicContent/Culture'
+import Languages from './components/publicContent/Languages'
+import Art from './components/publicContent/Art'
+import Nature from './components/publicContent/Nature'
+import Tourism from './components/publicContent/Tourism'
+import Entertainment from './components/publicContent/Entertainment'
+import Discover from './components/publicContent/Discover'
+import Fiction from './components/publicContent/Fiction'
+import Profile from './components/user/Profile';
+import UploadPictures from './components/userSpace/UploadPictures';
+import UploadArticles from './components/userSpace/UploadArticles';
+import UploadVideo from './components/userSpace/UploadVideo'
+import UploadAudio from './components/userSpace/UploadAudios'
+import AddContent from './components/userSpace/AddContent';
 import Nav from './components/parts/Nav'
 import jwt_decode from 'jwt-decode';
 import { useState, useEffect } from 'react';
@@ -69,6 +83,7 @@ function App() {
   const signInHandler = (user) => {
     axios.post("http://localhost:4000/signin", user)
     .then(res => {
+      console.log(res.data.token)
       // Store the token in Local Storage.
       if(res.data.token != null){
         localStorage.setItem("token", res.data.token);
@@ -84,30 +99,43 @@ function App() {
     });
   }
 
-
-
-
-    
-  
-
+  /*This function is designed to fetch the API that login the user into their account.
+    @Parameters:
+      -user: this para. holds the user obj that contains the user details.
+    @Return:
+      -This is a void function designed to respond to the clicking the submit button.  
+  */ 
+const contentHandler = (user) => {
+  axios.post("http://localhost:4000/add/post", user)
+}
   
    
   return (
     <div className="App">
       <Router>
         <nav>
-            <Nav audience="Public" />
-            <Link to="/">Home</Link>&nbsp;
-            <Link to="/signup">SignUp</Link>&nbsp;
-            <Link to="/signin">SignIn</Link> 
-          </nav>
-          <Routes>
-              <Route path="/" element={<Home/>}> </Route>
-              <Route path="/signup" element={<SignUp register={registerHandler}/>}></Route>
-              <Route path="/signin" element={<SignIn sign={signInHandler}/>}></Route>
-              <Route path="/sience" element={<Science/>}> </Route>
-              <Route path="/nature" element={<Nature/>}> </Route>
-          </Routes>
+          <Nav audience="Public" />
+        </nav>
+        <Routes>
+            <Route path="/" element={<Home/>}> </Route>
+            <Route path="/signup" element={<SignUp register={registerHandler}/>}></Route>
+            <Route path="/signin" element={<SignIn sign={signInHandler}/>}></Route>
+            <Route path="/sience" element={<Science/>}> </Route>
+            <Route path="/nature" element={<Nature/>}> </Route>
+            <Route path="/culture" element={<Culture/>}> </Route>
+            <Route path="/languages" element={<Languages/>}> </Route>
+            <Route path="/art" element={<Art/>}> </Route>
+            <Route path="/tourism" element={<Tourism/>}> </Route>
+            <Route path="/entertainment" element={<Entertainment/>}> </Route>
+            <Route path="/fiction" element={<Fiction/>}> </Route>
+            <Route path="/discover" element={<Discover/>}> </Route>
+            <Route path="/add/content" element={<AddContent/>}> </Route>
+            <Route path="/upload/pic" element={<UploadPictures/>}> </Route>
+            <Route path="/upload/video" element={<UploadVideo/>}> </Route>
+            <Route path="/upload/audio" element={<UploadAudio/>}> </Route>
+            <Route path="/upload/article" element={<UploadArticles register={contentHandler}/>}> </Route>
+            <Route path="/profile" element={<Profile />}> </Route>
+        </Routes>
       </Router>
     </div>
   );

@@ -1,0 +1,32 @@
+.add_content {
+    position: fixed;
+    right: 0px; bottom: 0px;
+    padding: 3%;
+  }
+
+  .PublicUsers{
+    margin: .5vw;
+    background-color: rgb(228, 167, 225);
+    width: 30%;
+    border-radius: 7%;
+    
+  }
+
+  .container{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .public_content{
+    border: solid;
+    border-radius: 5%;
+    margin: 2%;
+  }
+
+  .content_container{
+    width: 90%;
+    margin: 5%;
+    
+  }
+  
+  

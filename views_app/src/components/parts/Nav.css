@@ -5,8 +5,10 @@
 
 .navbar{
     /* display: flex; */
-    margin: 5%;
+    margin: 5% 15% 2% 15%;
     background-color: rgb(139, 199, 162);
+    
+
 }
 
 .title{
@@ -23,3 +25,18 @@
     padding: 1% 3% 0 0;
     font-size: 2vw;
 }
+
+.navContainer{
+    background-color: greenyellow;
+}
+
+.tabs{
+    text-decoration-line:none;
+    font-size: 1.8vw;
+    color: white;
+}
+
+.user{
+    color: black;
+    text-decoration-line:none;
+  }

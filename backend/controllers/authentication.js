@@ -49,6 +49,7 @@ const maxAge = 60 * 60 * 7
         -This is a void function that designed to respond to the signing up req's.
 */
 async function createUser(req, res) {
+  let public = true
   //Grapping the data given by the user.
   const { first_name, last_name, region, email, phone, password } = req.body;
   try {
@@ -60,10 +61,13 @@ async function createUser(req, res) {
       email,
       phone,
       password,
+      public,
     });
     //Creating the jwt.
     jwt.sign(
-      {id:user._id},
+      {id:user._id,
+      first_name: user.first_name, 
+      public: user.public},
       process.env.secret,
       { expiresIn: maxAge},
       (err, token) => {
@@ -109,7 +113,9 @@ const signIn = async (req, res) =>{
       }
       //Creating the jwt.
       jwt.sign(
-        {id:user._id},
+        {id:user._id,
+        first_name: user.first_name, 
+        public: user.public},
         process.env.secret,
         { expiresIn: maxAge},
         (err, token) => {

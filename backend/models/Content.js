@@ -9,16 +9,23 @@ const contentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    realm: {
+        type: String,
+        required: [true]
+    },
     content: {
         type: String,
         required: false
     },
     creator_id: {
         type: String,
-        required: [false]
+        default: 'Anonymous',
     },
+    public: {
+        type:String,
+    },
+    
 })
-
 
 const Content = mongoose.model('content', contentSchema) 
   

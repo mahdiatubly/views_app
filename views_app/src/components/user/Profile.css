@@ -1,0 +1,45 @@
+.profile_pic{
+    width: 20%;
+    height: auto;
+}
+
+.update_bio{
+    padding-left: 95%;
+    padding-top: 5%;
+    
+}
+
+.bio{
+    text-align: left;
+    border-top: solid;
+    width: 80%;
+    margin: 5% 10% 2% 10%;
+}
+
+h1{
+    margin: 3%;
+}
+
+.post_sec{
+    border-top: solid;
+    text-align: left;
+    width: 80%;
+    margin:0% 10% 0% 10%;
+    padding: 2%;
+}
+
+.comment_sec{
+    border-top: solid;
+    text-align: left;
+    width: 80%;
+    margin:0% 10% 0% 10%;
+    padding: 2%;
+}
+
+.info_div{
+    margin:10%;
+    padding: 3%;
+    width: 80%;
+    border: solid;
+    border-color: rgb(224, 221, 221);
+}

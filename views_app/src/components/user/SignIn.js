@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 // Put any other imports below so that CSS from your
 // components takes precedence over default styles.
 import React from 'react'
@@ -44,9 +45,12 @@ export default function SignIn(props) {
                 </div>
             </div>
             <div className="col-sm-10">
+            
                 <div className="row">
-                    <button type="submit" name="signup" id="signup"  onClick={signHandler} className="btn btn-primary">submit</button>
+                    <button type="submit" name="signup" id="signup"  onClick={signHandler} className="btn btn-primary"><Link to='/private/home'>submit</Link></button>
                 </div>
+            
+                
             </div>
         </form>
     </div>

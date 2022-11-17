@@ -13,6 +13,7 @@ app.use(express.json());
 
 //Importing the routers
 app.use("/", require("./routers/user"));
+app.use("/", require("./routers/content"));
 
 //Connecting to the DB
 const dbUrl = `mongodb+srv://mahdiatubly:${process.env.dbUrl}@viewsapp.pi4hcan.mongodb.net/?retryWrites=true&w=majority`;

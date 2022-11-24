@@ -9,7 +9,7 @@ export default function Nav(props) {
     try{
       let token = localStorage.getItem("token");
       let decodedToken  = jwt_decode(token)
-      state = decodedToken.first_name
+      state = decodedToken.user.first_name
       return state
     }
     catch(err){

@@ -63,11 +63,18 @@ async function createUser(req, res) {
       password,
       public,
     });
+
+    // JWT Token
+    const payload = {
+      user: {
+        id:user._id,
+        first_name: user.first_name, 
+        public: user.public
+      }
+  }
     //Creating the jwt.
     jwt.sign(
-      {id:user._id,
-      first_name: user.first_name, 
-      public: user.public},
+      payload,
       process.env.secret,
       { expiresIn: maxAge},
       (err, token) => {

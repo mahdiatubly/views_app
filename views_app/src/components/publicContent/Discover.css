@@ -29,4 +29,19 @@
     
   }
   
+  .creator{
+    display: inline;
+    width: 30%;
+    margin-left: 1%;
+  }
   
+  .last_update{
+    display: inline;
+    width: 30%;
+    padding-left: 60%;
+  }
+
+  .realm{
+    padding: 0.5%;
+    margin: 0%;
+  }

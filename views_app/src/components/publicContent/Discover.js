@@ -62,7 +62,24 @@ export default function Discover() {
       < div className='content_container'>
         {publicContent.length ? publicContent.map(content => 
         <div className='public_content'>
-          {content.content}
+          <div className='realm'>
+            {content.realm}
+          </div>
+          {content.creator_id ?
+          <div className='creator'>
+            {content.creator_id.first_name} {content.creator_id.last_name}
+          </div>
+          :
+            <div className='creator'>
+              Anonymous
+            </div>
+          }
+          <div className='last_update'>
+            {content.updatedAt}
+          </div>
+          <div className='content'>
+            {content.content}
+          </div>
         </div>
       )
       : null}

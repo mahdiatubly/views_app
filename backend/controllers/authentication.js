@@ -93,41 +93,47 @@ async function createUser(req, res) {
 const signIn = async (req, res) =>{
   //Grapping the data given by the user.
   let {email, password} = req.body;
-  console.log(req.body);
-  try{
-    //Looking into the DB to figure out if the provided email registered in the DB or not.
-    let user = await User.findOne({email}); // email: email
-    console.log(user);
+    console.log(email);
 
-    if(!user){
-      return res.json({message: "User not found"}).status(400);
-    }
+    try{
+        let user = await User.findOne({email}); // email: email
+        console.log(user);
 
-      // Password Comparison
-      console.log(password); // Plaintext password
-      console.log(user.password); // Encrypted password
-      const isMatch = await bcrypt.compareSync(password, user.password);
-
-      if(!isMatch) {
-          return res.json({message: "Password not matched"}).status(401);
-      }
-      //Creating the jwt.
-      jwt.sign(
-        {id:user._id,
-        first_name: user.first_name, 
-        public: user.public},
-        process.env.secret,
-        { expiresIn: maxAge},
-        (err, token) => {
-            if(err) throw err;
-            res.json({token}).status(200);
+        if(!user){
+            return res.json({message: "User not found"}).status(400);
         }
-    )
-  } 
-  catch (error) {
-    console.log(error)
-    res.json({message: "You are not loggedin!. Try again later."}).status(400);
-  }
+
+        // Password Comparison
+        const isMatch = await bcrypt.compareSync(password.trim(), user.password.trim());
+        console.log(password); // Plaintext password
+        console.log(user.password); // Encrypted password
+        console.log(isMatch)
+        if(!isMatch) {
+            return res.json({message: "Password not matched"}).status(401);
+        }
+        
+        // JWT Token
+        const payload = {
+            user: {
+              id:user._id,
+              first_name: user.first_name, 
+              public: user.public
+            }
+        }
+
+        jwt.sign(
+            payload,
+            process.env.secret,
+            { expiresIn: maxAge},
+            (err, token) => {
+                if(err) throw err;
+                res.json({token}).status(200);
+            }
+        )
+    } catch (error) {
+        console.log(error)
+        res.json({message: "You are not loggedin!. Try again later."}).status(400);
+    }
 }
 
 //Exporting the functions to used in the routers.
@@ -135,3 +141,8 @@ module.exports = {
   createUser,
   signIn,
 };
+
+
+
+
+

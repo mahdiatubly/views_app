@@ -22,7 +22,6 @@ export default function UploadArticles(props) {
       article['public'] = pb
     }
     catch(err){
-      article['creator_id'] = "Anonymous"
       article['public'] = 'true'
     }
     

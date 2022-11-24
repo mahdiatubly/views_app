@@ -47,7 +47,7 @@ export default function SignIn(props) {
             <div className="col-sm-10">
             
                 <div className="row">
-                    <button type="submit" name="signup" id="signup"  onClick={signHandler} className="btn btn-primary"><Link to='/private/home'>submit</Link></button>
+                    <button type="submit" name="signup" id="signup"  onClick={signHandler} className="btn btn-primary">submit</button>
                 </div>
             
                 

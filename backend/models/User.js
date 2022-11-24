@@ -39,10 +39,11 @@ const userSchema = new mongoose.Schema({
     },
     bio: {
         type: String,
+        require: false,
     },
     content: [{
         type: schema.Types.ObjectId,
-        ref: 'Content'
+        ref: 'content'
     }],
     comments: [{
         type: schema.Types.ObjectId,
@@ -59,7 +60,7 @@ const userSchema = new mongoose.Schema({
   
 userSchema.pre('save', async function(next){
     const salt = await bcrypt.genSalt()
-    this.password = await bcrypt.hash(this.password, salt)
+    this.password = await bcrypt.hash(this.password.trim(), salt)
     next()
 })
 

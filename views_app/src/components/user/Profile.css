@@ -55,5 +55,26 @@ h1{
 }
 
 .label{
-    margin: 0% 0% 0% 0%
+    margin: 0% .5% 0% 0%
+}
+
+.edit_bio{
+    background-color: white;
+    border-color: white;
+}
+
+.bio_textarea{
+    width: 100%;
+    display: none;
+}
+
+.save{
+    width: 100%;
+    display: none;
+    margin-top: 1%;
+}
+
+.bio_text{
+    display: block;
+    font-size: 2vw;
 }

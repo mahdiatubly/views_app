@@ -16,6 +16,7 @@ import Profile from './components/user/Profile';
 import UploadPictures from './components/userSpace/UploadPictures';
 import UploadArticles from './components/userSpace/UploadArticles';
 import UploadVideo from './components/userSpace/UploadVideo'
+import AllPosts from './components/user/AllPosts';
 import UploadAudio from './components/userSpace/UploadAudios'
 import AddContent from './components/userSpace/AddContent';
 import Nav from './components/parts/Nav'
@@ -23,6 +24,7 @@ import jwt_decode from 'jwt-decode';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+
 
 function App() {
   //This state is defined to store if the session is auth or not.
@@ -92,7 +94,6 @@ function App() {
         setIsAuth(true);
         setUser(user);
       }
-      console.log(res);
     })
     .catch(err => {
       console.log(err)
@@ -108,7 +109,13 @@ function App() {
 const contentHandler = (user) => {
   axios.post("http://localhost:4000/add/post", user)
 }
-  
+
+const onLogoutHandler = (e) => {
+  e.preventDefault();
+  localStorage.removeItem("token");
+  setIsAuth(false);
+  setUser(null);
+}
    
   return (
     <div className="App">
@@ -134,7 +141,8 @@ const contentHandler = (user) => {
             <Route path="/upload/video" element={<UploadVideo/>}> </Route>
             <Route path="/upload/audio" element={<UploadAudio/>}> </Route>
             <Route path="/upload/article" element={<UploadArticles register={contentHandler}/>}> </Route>
-            <Route path="/profile" element={<Profile />}> </Route>
+            <Route path="/profile" element={isAuth ? <Profile out={onLogoutHandler}/> : <SignIn sign={signInHandler}/>}> </Route>
+            <Route path="/all/user/posts" element={<AllPosts />}> </Route>
         </Routes>
       </Router>
     </div>

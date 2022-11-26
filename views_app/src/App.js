@@ -2,7 +2,6 @@ import './App.css';
 import SignIn from './components/user/SignIn';
 import SignUp from './components/user/SignUp';
 import Home from './components/publicContent/Home';
-import PrivateHome from './components/privateContent/Home';
 import Science from './components/publicContent/Science';
 import Culture from './components/publicContent/Culture'
 import Languages from './components/publicContent/Languages'
@@ -31,6 +30,7 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
   //This state is defined to store the user signed in
   const [user, setUser] = useState({});
+  let[State, setState] = useState({})
 
   /*This hook is used to mount the state to the component; it will readd the state
   into the page in the case of refereshing the page. */
@@ -110,8 +110,8 @@ const contentHandler = (user) => {
   axios.post("http://localhost:4000/add/post", user)
 }
 
-const onLogoutHandler = (e) => {
-  e.preventDefault();
+const onLogoutHandler = () => {
+  //e.preventDefault();
   localStorage.removeItem("token");
   setIsAuth(false);
   setUser(null);
@@ -141,7 +141,7 @@ const onLogoutHandler = (e) => {
             <Route path="/upload/video" element={<UploadVideo/>}> </Route>
             <Route path="/upload/audio" element={<UploadAudio/>}> </Route>
             <Route path="/upload/article" element={<UploadArticles register={contentHandler}/>}> </Route>
-            <Route path="/profile" element={isAuth ? <Profile out={onLogoutHandler}/> : <SignIn sign={signInHandler}/>}> </Route>
+            <Route path="/profile" element={isAuth ? <Profile out={onLogoutHandler} /> : <SignIn sign={signInHandler}/>}> </Route>
             <Route path="/all/user/posts" element={<AllPosts />}> </Route>
         </Routes>
       </Router>

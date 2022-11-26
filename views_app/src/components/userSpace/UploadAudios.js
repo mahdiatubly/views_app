@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function UploadAudios() {
   return (
-    <div>UploadAudios</div>
+    <div>This feature will be available soon!</div>
   )
 }

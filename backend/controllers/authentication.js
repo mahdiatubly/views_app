@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 router.use(cookieParser());
 require("dotenv").config();
 
+let salt = 10
 /*This function is intended to handle errors caused by uncompatible data provided by user,
   it will show the precise reason behined the caused problem
         @Parameters: 
@@ -53,6 +54,8 @@ async function createUser(req, res) {
   //Grapping the data given by the user.
   const { first_name, last_name, region, email, phone, password } = req.body;
   try {
+    let hashedPassword = bcrypt.hashSync(req.body.password, salt)
+    console.log(hashedPassword);
     //adding the user account into the DB
     const user = await User.create({
       first_name,
@@ -60,7 +63,7 @@ async function createUser(req, res) {
       region,
       email,
       phone,
-      password,
+      password: hashedPassword,
       public,
     });
 
@@ -111,9 +114,10 @@ const signIn = async (req, res) =>{
         }
 
         // Password Comparison
-        const isMatch = await bcrypt.compareSync(password.trim(), user.password.trim());
+        const isMatch = await bcrypt.compareSync(password, user.password);
         console.log(password); // Plaintext password
-        console.log(user.password); // Encrypted password
+        console.log(user.password);
+         // Encrypted password
         console.log(isMatch)
         if(!isMatch) {
             return res.json({message: "Password not matched"}).status(401);

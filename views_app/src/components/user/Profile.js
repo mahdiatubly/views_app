@@ -11,24 +11,23 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 
 export default function Profile(props) {
-    let [state, setState] = useState({ checked: false });
+    let token = localStorage.getItem("token");
+    let decodedToken  = jwt_decode(token)
+    let id = decodedToken.user.id
+    let status = decodedToken.user.public
     let[bioState, setBioState] = useState({})
     let[editState, setEditState] = useState({})
     useEffect(() => {
         getBio()
     },[])
-
-    let token = localStorage.getItem("token");
-    let decodedToken  = jwt_decode(token)
-    let id = decodedToken.id
-    // useEffect(() => {
-    //     //setEditState()
-    //     setBioState()
-    // }, [])
-
-    function handleChange(checked) {
-        setState({ checked });
-      }
+    
+    const [checked, setChecked] = useState(status);
+    const handleChange = async nextChecked => {
+        setChecked(nextChecked);
+        props.out()
+        await axios.post("http://localhost:4000/update/state", {id:id})
+        
+    }
 
     function editBio(){
         document.querySelector('.bio_textarea').style.display = 'block'
@@ -36,15 +35,6 @@ export default function Profile(props) {
         document.querySelector('.bio_text').style.display = 'none'
         document.querySelector('.update_bio').style.display = 'none'
     }
-
-    // function getBio(){
-    //     axios.get('http://localhost:4000/update/bio')
-    //     .then(res =>{ 
-    //         console.log(res.data)
-    //         return setEditState(res.data)})
-    //     .catch(err => console.log(err))
-        
-    // }
 
     function getBio(){
         axios.get(`http://localhost:4000/update/bio/${id}`)
@@ -70,7 +60,7 @@ export default function Profile(props) {
         try{
             let token = localStorage.getItem("token");
             let decodedToken  = jwt_decode(token)
-            userBio['_id'] = decodedToken.id;
+            userBio['_id'] = decodedToken.user.id;
           }
           catch(err){
             console.log(err)
@@ -107,8 +97,8 @@ export default function Profile(props) {
             </div>
             <div className='status_sec'>
                 <label>
-                    <h1 className='label' >Private Account</h1>
-                    <Switch onChange={handleChange} checked={state.checked} />
+                    <h1 className='label' >Public Account</h1>
+                    <Switch onChange={handleChange} checked={checked} />
                 </label>
             </div>
             <div className='comment_sec'>

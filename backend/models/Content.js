@@ -24,7 +24,7 @@ const contentSchema = new mongoose.Schema({
         required: false
     },
     public: {
-        type:String,
+        type:Boolean,
     }
 },
     {

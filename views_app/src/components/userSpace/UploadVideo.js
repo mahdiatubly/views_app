@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function UploadVideo() {
   return (
-    <div>UploadVideo</div>
+    <div>This feature will be available soon!</div>
   )
 }

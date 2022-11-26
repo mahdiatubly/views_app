@@ -43,7 +43,7 @@ export default function AllPosts() {
             < div className='container'>
             {userPosts.length ? userPosts.map(user => 
                 user.content.length ? user.content.map(content =>
-                    content.creator_id === decodedToken.id ?
+                    content.creator_id === decodedToken.user.id ?
                         <div className='posts'>
                             <div>
                             {content.updatedAt}

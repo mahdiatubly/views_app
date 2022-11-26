@@ -12,16 +12,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 export default function AddContent() {
   const [content, setContent] = useState({})
-  
-  async function categorize_content(e){
-      
-      const contentObj = { ...content };
-      contentObj['content_type'] = e.target.value;
-      console.log(contentObj);
-      setContent(contentObj);
-      localStorage.setItem("category", content.content_type);
-  }
-  
+
   async function define_realm(e){
     const contentObj = { ...content };
     contentObj['realm'] = await e.target.value;
@@ -37,7 +28,7 @@ export default function AddContent() {
       <div className='realm'>
         <label className='menueLabel'>Choose the realm of your post: </label>
         <select name='realm' id="realms">
-          <option name='realm' onClick={define_realm} value="Sience">Sience</option>
+          <option name='realm' onClick={define_realm} value="Science">Science</option>
           <option name='realm' onClick={define_realm} value="Languages">Languages</option>
           <option name='realm' onClick={define_realm} value="Culture">Culture</option>
           <option name='realm' onClick={define_realm} value="Discover">Discover</option>
@@ -53,16 +44,16 @@ export default function AddContent() {
         <IconContext.Provider value={{size: 72}}>
           <div className='types_bar'>
             <div className='pic'>
-              <button name='content_type' value='picture' onClick={categorize_content}><Link to ='/upload/pic'><FcOldTimeCamera /></Link></button>
+              <button name='content_type' value='picture' ><Link to ='/upload/pic'><FcOldTimeCamera /></Link></button>
             </div>
             <div className='video'>
-              <button name='content_type' value='video' onClick={categorize_content}><Link to='/upload/video'><FcCamcorderPro/></Link></button>
+              <button name='content_type' value='video'><Link to='/upload/video'><FcCamcorderPro/></Link></button>
             </div>
             <div className='audio'>
-              <button name='content_type' value='audio' onClick={categorize_content}><Link to='/upload/audio'><FcHeadset/></Link></button>
+              <button name='content_type' value='audio'><Link to='/upload/audio'><FcHeadset/></Link></button>
             </div>
             <div className='article'>
-              <button name='content_type' value='article' onClick={categorize_content}><Link to='/upload/article'><FcDocument/></Link></button>
+              <button name='content_type' value='article'><Link to='/upload/article'><FcDocument/></Link></button>
             </div>
           </div>
         </IconContext.Provider>

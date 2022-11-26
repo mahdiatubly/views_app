@@ -17,12 +17,12 @@ export default function UploadArticles(props) {
     try{
       let token = localStorage.getItem("token");
       let decodedToken  = jwt_decode(token)
-      article['creator_id'] = decodedToken.id;
-      let pb = decodedToken.public
+      article['creator_id'] = decodedToken.user.id;
+      let pb = decodedToken.user.public
       article['public'] = pb
     }
     catch(err){
-      article['public'] = 'true'
+      article['public'] = true
     }
     
     console.log(article);

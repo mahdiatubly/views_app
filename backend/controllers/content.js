@@ -1,6 +1,9 @@
 //Importing the required packages
+
 const express = require("express");
 const router = express();
+const cors = require("cors");
+router.use(cors());
 const Content = require("../models/Content");
 const User = require("../models/User");
 
@@ -49,7 +52,7 @@ async function createPost(req, res) {
 async function getAllPbUsers(req, res) {
   
   // Find by email
-  let users = await User.find({public: 'true'}, function(err, users) {
+  let users = await User.find({public: true}, function(err, users) {
     if (err) return res.send(err) 
     res.send(users) 
   }).clone().catch(function(err){ console.log(err)}) 
@@ -67,11 +70,92 @@ async function getAllPbUsers(req, res) {
 async function getAllPbContent(req, res) {
   
     // Find by email
-    let content = await Content.find({$or:[ {public:'true'}]}).populate('creator_id').exec (function(err, content) {
+    let content = await Content.find({$or:[ {public:true}]}).populate('creator_id').exec (function(err, content) {
       if (err) return res.send(err) 
       res.send(content) 
     })
   }
+
+  /*This function is an API that responds to the get request of all public users,
+  it adds the users info into the DB and return an error if the provided data are not
+  match the defined requirements.
+    @Parameters: 
+        -req: to get the data provided by the user
+        -res: to respond to the users req
+    @return:
+        -This is a void function that designed to respond to the signing up req's.
+*/
+async function getNatureContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Nature'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getScienceContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Science'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getTourismContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Tourism'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getLanguagesContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Languages'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getFictionContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Fiction'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getArtContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Art'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getCultureContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Culture'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
+
+async function getEntertainmentContent(req, res) {
+  
+  // Find by email
+  let content = await Content.find({$and:[ {public:true}, {realm: 'Entertainment'}]}).populate('creator_id').exec (function(err, content) {
+    if (err) return res.send(err) 
+    res.send(content) 
+  })
+}
 
 
   /*This function is an API that responds to the get request of all public users,
@@ -84,7 +168,6 @@ async function getAllPbContent(req, res) {
         -This is a void function that designed to respond to the signing up req's.
 */
 async function getAllPosts(req, res) {
-  
   // Find by email
   let content = await User.find({}).populate('content').exec(function(err, content) {
     if (err) return res.send(err) 
@@ -96,7 +179,6 @@ async function getAllPosts(req, res) {
 
 
 async function editBio(req, res) {
-  
   //Grapping the data given by the user.
   const {bio, _id} = req.body;
       //adding the user account into the DB
@@ -106,6 +188,24 @@ async function editBio(req, res) {
         await userContent.save()
         //console.log(userContent)
       }
+}
+
+
+
+async function updateState(req, res) {
+  //Grapping the data given by the user.
+  let {id} = await req.body;
+      //adding the user account into the DB
+      let userContent = await User.findById(id)
+      if(userContent.public === false){
+        userContent.public = true
+        await userContent.save()
+      }
+      else{
+        userContent.public = false
+        await userContent.save()
+      }
+      console.log(userContent)
 }
 
 // async function getBio(req, res){
@@ -127,6 +227,7 @@ async function getBio(req, res){
 
 
 
+
 //Exporting the functions to used in the routers.
 module.exports = {
     createPost,
@@ -135,6 +236,15 @@ module.exports = {
     getAllPosts,
     editBio,
     getBio,
+    updateState,
+    getNatureContent,
+    getScienceContent,
+    getTourismContent,
+    getLanguagesContent,
+    getFictionContent,
+    getArtContent,
+    getCultureContent,
+    getEntertainmentContent,
   };
 
 
